@@ -27,6 +27,24 @@ Principais avanços:
 
 > 🧠 Com isso, a API evoluiu de um CRUD REST básico (Nível 2) para uma API navegável e autodescritiva (Nível 3).
 
+## 🚀 Evolução — Sprint 3
+
+Na Sprint 3, a API foi expandida para suportar o **gerenciamento de mesas** e integração com o app mobile:
+
+* **Novo endpoint de Mesas** (`GET /api/mesas`) — lista todas as mesas do restaurante com status (livre/ocupada)
+* **Busca por número** (`GET /api/mesas/numero/{numero}`) — localiza mesa por número
+* **Converters JPA** — mapeamento correto de enums e boolean (`S`/`N`) para o banco Oracle
+* **Integração com app mobile** — o dashboard de mesas do garçom no app React Native consome este endpoint
+
+### 🪑 Endpoints de Mesas (Sprint 3)
+
+| Método | Endpoint | Descrição |
+|:-------|:---------|:----------|
+| `GET` | `/api/mesas` | Lista todas as mesas do restaurante |
+| `GET` | `/api/mesas?status=livre` | Filtra mesas por status |
+| `GET` | `/api/mesas/{id}` | Busca mesa por ID |
+| `GET` | `/api/mesas/numero/{numero}` | Busca mesa por número |
+
 ## 📱 Interface do Aplicativo Pedix
 
 <p align="center">
@@ -172,15 +190,17 @@ pedix-api/
 │   ├── main/
 │   │   ├── java/com/pedix/api/
 │   │   │   ├── controller/              → Camada de controle (endpoints REST)
-│   │   │   │   ├── HomeController.java         → Novo endpoint `/home` com HATEOAS
-│   │   │   │   ├── ItemCardapioController.java → CRUD dos itens do cardápio com HATEOAS
-│   │   │   │   └── PedidoController.java       → CRUD de pedidos com HATEOAS
+│   │   │   │   ├── HomeController.java         → Endpoint `/home` com HATEOAS
+│   │   │   │   ├── ItemCardapioController.java → CRUD dos itens do cardápio
+│   │   │   │   ├── MesaController.java         → Listagem de mesas (Sprint 3) 🆕
+│   │   │   │   └── PedidoController.java       → CRUD de pedidos
 │   │   │   │
 │   │   │   ├── domain/                  → Entidades JPA (modelo de domínio)
 │   │   │   │   ├── enums/               → Enumerações usadas nas entidades
 │   │   │   │   │   ├── CategoriaItem.java
 │   │   │   │   │   └── StatusPedido.java
 │   │   │   │   ├── ItemCardapio.java
+│   │   │   │   ├── Mesa.java            → Entidade de mesas (Sprint 3) 🆕
 │   │   │   │   ├── Pedido.java
 │   │   │   │   └── PedidoItem.java
 │   │   │   │
@@ -196,10 +216,12 @@ pedix-api/
 │   │   │   │
 │   │   │   ├── repository/              → Repositórios JPA
 │   │   │   │   ├── ItemCardapioRepository.java
+│   │   │   │   ├── MesaRepository.java  → Repository de mesas (Sprint 3) 🆕
 │   │   │   │   └── PedidoRepository.java
 │   │   │   │
 │   │   │   ├── service/                 → Regras de negócio (camada de serviço)
 │   │   │   │   ├── ItemCardapioService.java
+│   │   │   │   ├── MesaService.java     → Service de mesas (Sprint 3) 🆕
 │   │   │   │   └── PedidoService.java
 │   │   │   │
 │   │   │   └── PedixApplication.java    → Classe principal (entry point do Spring Boot)
@@ -227,6 +249,7 @@ A aplicação **Pedix API** oferece as seguintes funcionalidades principais:
 - 🍽️ **Gerenciamento de Itens do Cardápio** — criação, listagem, atualização e exclusão de pratos, bebidas e sobremesas.
 - 🧾 **Gestão de Pedidos** — criação, consulta, atualização e exclusão de pedidos vinculados a comandas.
 - 🔄 **Atualização de Status** — permite alterar o status dos pedidos em tempo real (`EM_PREPARO`, `PRONTO`, `ENTREGUE`, `CANCELADO`).
+- 🪑 **Gerenciamento de Mesas** — listagem de mesas com status (livre/ocupada), busca por ID ou número. 🆕
 - 🧱 **Persistência em Banco Oracle** — todos os dados são armazenados de forma segura e consistente no banco de dados relacional.
 - 📖 **API RESTful Documentada** — acesso via Swagger UI para explorar e testar os endpoints interativamente.
 - 💡 Agora, todas as respostas dos endpoints incluem hipermídia HATEOAS e mensagens padronizadas.
