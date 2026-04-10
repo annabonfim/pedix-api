@@ -1,7 +1,6 @@
 package com.pedix.api.controller;
 
 import com.pedix.api.domain.Pedido;
-import com.pedix.api.domain.enums.StatusPedido;
 import com.pedix.api.dto.PedidoDTO;
 import com.pedix.api.dto.PedidoResponseDTO;
 import com.pedix.api.service.PedidoService;
@@ -28,7 +27,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
         name = "Pedido",
         description = """
         Controla os **pedidos** vinculados às comandas do restaurante.  
-        Permite **criar pedidos**, **listar por comanda**, **listar todos**, **buscar por ID** e **atualizar status**.
+        Permite **criar pedidos**, **listar por comanda**, **listar todos**, **buscar por ID**, **atualizar pedido** (itens, observação e status) e **deletar**.
         """
 )
 public class PedidoController {
@@ -91,16 +90,16 @@ public class PedidoController {
         return ResponseEntity.created(location).body(body);
     }
 
-    @Operation(summary = "Atualizar status do pedido")
-    @PutMapping("/{id}/status")
-    public ResponseEntity<Map<String, Object>> atualizarStatus(
+    @Operation(summary = "Atualizar pedido (itens, observação e status)")
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> atualizar(
             @PathVariable Long id,
-            @RequestParam StatusPedido status) {
+            @Valid @RequestBody PedidoDTO dto) {
 
-        PedidoResponseDTO atualizado = service.atualizarStatus(id, status);
+        PedidoResponseDTO atualizado = service.atualizarPedido(id, dto);
 
         Map<String, Object> body = Map.of(
-                "mensagem", "Status do pedido atualizado com sucesso!",
+                "mensagem", "Pedido atualizado com sucesso!",
                 "pedido", atualizado,
                 "_links", Map.of(
                         "self", linkTo(methodOn(PedidoController.class).obter(atualizado.getId())).toUri(),

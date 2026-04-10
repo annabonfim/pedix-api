@@ -1,5 +1,7 @@
 package com.pedix.api.domain;
 
+import com.pedix.api.converter.BooleanToCharConverter;
+import com.pedix.api.converter.CategoriaItemConverter;
 import com.pedix.api.domain.enums.CategoriaItem;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -24,29 +26,30 @@ public class ItemCardapio {
 
     @Id
     @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_seq_gen")
-    @SequenceGenerator(name = "item_seq_gen", sequenceName = "ITEM_CARDAPIO_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_ITEM")
     private Long id;
 
     @NotBlank(message = "O nome do item é obrigatório.")
-    @Column(nullable = false, length = 120)
+    @Column(name = "NOME", nullable = false, length = 120)
     private String nome;
 
-    @Column(length = 500)
+    @Column(name = "DESCRICAO", length = 500)
     private String descricao;
 
-    @Enumerated(EnumType.STRING)
     @NotNull(message = "A categoria do item é obrigatória.")
-    @Column(nullable = false, length = 30)
+    @Convert(converter = CategoriaItemConverter.class)
+    @Column(name = "CATEGORIA", nullable = false, length = 30)
     private CategoriaItem categoria;
 
     @NotNull(message = "O preço é obrigatório.")
     @Positive(message = "O preço deve ser maior que zero.")
-    @Column(precision = 12, scale = 2, nullable = false)
+    @Column(name = "PRECO", precision = 12, scale = 2, nullable = false)
     private BigDecimal preco;
 
     @NotNull
-    @Column(nullable = false)
+    @Convert(converter = BooleanToCharConverter.class)
+    @Column(name = "DISPONIVEL", nullable = false, length = 1)
     private Boolean disponivel = true;
 
     @Column(name = "IMAGEM_URL", length = 500)

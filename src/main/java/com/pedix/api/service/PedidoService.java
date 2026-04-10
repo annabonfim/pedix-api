@@ -9,9 +9,11 @@ import com.pedix.api.dto.PedidoResponseDTO;
 import com.pedix.api.repository.PedidoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,10 +28,10 @@ public class PedidoService {
     private final ItemCardapioService itemService;
 
     /**
-     * Lista todos os pedidos cadastrados.
+     * Lista todos os pedidos cadastrados, ordenados por ID (crescente).
      */
     public List<Pedido> listarTodos() {
-        return pedidoRepository.findAll();
+        return pedidoRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     /**
@@ -71,23 +73,48 @@ public class PedidoService {
                     .build();
 
             pedidoItem.definirPrecoPadrao(); // define preço e subtotal
-            pedido.adicionarItem(pedidoItem); // adiciona item e recalcula total
+            pedido.adicionarItem(pedidoItem); // adiciona item
         });
-
-        // Recalcula total final antes de persistir
-        pedido.recalcularTotal();
 
         Pedido salvo = pedidoRepository.save(pedido);
         return toResponse(salvo);
     }
 
     /**
-     * Atualiza o status de um pedido.
+     * Atualiza um pedido existente (itens, observação e status).
      */
     @Transactional
-    public PedidoResponseDTO atualizarStatus(Long id, StatusPedido status) {
+    public PedidoResponseDTO atualizarPedido(Long id, PedidoDTO dto) {
         Pedido pedido = buscarPorId(id);
-        pedido.atualizarStatus(status);
+        
+        // Atualiza observação
+        pedido.setObservacao(dto.getObservacao());
+        
+        // Atualiza status se fornecido
+        if (dto.getStatus() != null) {
+            pedido.atualizarStatus(dto.getStatus());
+        }
+        
+        // Remove itens antigos
+        pedido.getItens().clear();
+        
+        // Adiciona novos itens
+        dto.getItens().forEach(itemDTO -> {
+            ItemCardapio item = itemService.buscarPorId(itemDTO.getItemCardapioId());
+            
+            if (!Boolean.TRUE.equals(item.getDisponivel())) {
+                throw new IllegalArgumentException("Item indisponível: " + item.getNome());
+            }
+            
+            PedidoItem pedidoItem = PedidoItem.builder()
+                    .itemCardapio(item)
+                    .quantidade(itemDTO.getQuantidade())
+                    .build();
+            
+            pedidoItem.definirPrecoPadrao(); // define preço e subtotal
+            pedido.adicionarItem(pedidoItem); // adiciona item
+        });
+        
         Pedido atualizado = pedidoRepository.save(pedido);
         return toResponse(atualizado);
     }
@@ -105,24 +132,29 @@ public class PedidoService {
      * Converte entidade Pedido para DTO de resposta.
      */
     public PedidoResponseDTO toResponse(Pedido pedido) {
+        List<PedidoResponseDTO.ItemResumo> itemResumos = pedido.getItens().stream()
+                .map(pi -> PedidoResponseDTO.ItemResumo.builder()
+                        .itemCardapioId(pi.getItemCardapio().getId())
+                        .nome(pi.getItemCardapio().getNome())
+                        .quantidade(pi.getQuantidade())
+                        .precoUnitario(pi.getPrecoUnitario())
+                        .subtotal(pi.getSubtotal())
+                        .build())
+                .collect(Collectors.toList());
+        
+        // Calcula o total baseado nos itens
+        BigDecimal total = itemResumos.stream()
+                .map(PedidoResponseDTO.ItemResumo::getSubtotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        
         return PedidoResponseDTO.builder()
                 .id(pedido.getId())
                 .comandaId(pedido.getComandaId())
                 .status(pedido.getStatus())
                 .dataCriacao(pedido.getDataHora())
                 .observacao(pedido.getObservacao())
-                .total(pedido.getTotal())
-                .itens(
-                        pedido.getItens().stream()
-                                .map(pi -> PedidoResponseDTO.ItemResumo.builder()
-                                        .itemCardapioId(pi.getItemCardapio().getId())
-                                        .nome(pi.getItemCardapio().getNome())
-                                        .quantidade(pi.getQuantidade())
-                                        .precoUnitario(pi.getPrecoUnitario())
-                                        .subtotal(pi.getSubtotal())
-                                        .build())
-                                .collect(Collectors.toList())
-                )
+                .total(total)
+                .itens(itemResumos)
                 .build();
     }
 }

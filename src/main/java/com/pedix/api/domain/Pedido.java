@@ -1,6 +1,7 @@
 package com.pedix.api.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.pedix.api.converter.StatusPedidoConverter;
 import com.pedix.api.domain.enums.StatusPedido;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -28,8 +29,8 @@ public class Pedido {
 
     @Id
     @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pedido_seq_gen")
-    @SequenceGenerator(name = "pedido_seq_gen", sequenceName = "PEDIDO_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_PEDIDO")
     private Long id;
 
     /** ID da comanda associada ao pedido (vinculado à API .NET) */
@@ -38,17 +39,13 @@ public class Pedido {
     private Long comandaId;
 
     /** Status do pedido — default: EM_PREPARO */
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = StatusPedidoConverter.class)
     @Column(name = "STATUS", length = 50, nullable = false)
     private StatusPedido status = StatusPedido.EM_PREPARO;
 
     /** Observações adicionais do cliente */
     @Column(name = "OBSERVACAO", length = 500)
     private String observacao;
-
-    /** Valor total do pedido calculado automaticamente */
-    @Column(name = "TOTAL", precision = 12, scale = 2, nullable = false)
-    private BigDecimal total = BigDecimal.ZERO;
 
     /** Data/hora de criação do pedido (definida automaticamente) */
     @CreationTimestamp
@@ -63,23 +60,21 @@ public class Pedido {
     // ====================== MÉTODOS DE DOMÍNIO ====================== //
 
     /**
-     * Adiciona um item ao pedido e recalcula o total.
+     * Adiciona um item ao pedido.
      */
     public void adicionarItem(PedidoItem item) {
         if (item == null) return;
         item.setPedido(this);
         this.itens.add(item);
-        recalcularTotal();
     }
 
     /**
-     * Remove um item do pedido e recalcula o total.
+     * Remove um item do pedido.
      */
     public void removerItem(PedidoItem item) {
         if (item == null) return;
         item.setPedido(null);
         this.itens.remove(item);
-        recalcularTotal();
     }
 
     /**
@@ -91,20 +86,9 @@ public class Pedido {
         }
     }
 
-    /**
-     * Recalcula o valor total com base nos itens.
-     */
-    @PrePersist
-    @PreUpdate
-    public void recalcularTotal() {
-        this.total = this.itens.stream()
-                .map(PedidoItem::getSubtotal)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
     @Override
     public String toString() {
-        return String.format("Pedido{id=%d, comandaId=%d, status=%s, total=%.2f, itens=%d}",
-                id, comandaId, status, total, itens.size());
+        return String.format("Pedido{id=%d, comandaId=%d, status=%s, itens=%d}",
+                id, comandaId, status, itens.size());
     }
 }

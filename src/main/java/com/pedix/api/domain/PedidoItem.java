@@ -23,8 +23,8 @@ public class PedidoItem {
 
     @Id
     @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pedido_item_seq_gen")
-    @SequenceGenerator(name = "pedido_item_seq_gen", sequenceName = "PEDIDO_ITEM_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_PEDIDO_ITEM")
     private Long id;
 
     /** Pedido ao qual este item pertence */
