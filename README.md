@@ -551,7 +551,8 @@ Antes de testar os endpoints, é possível verificar o status da API e acessar s
 "descricao": "Lasanha tradicional com molho bolonhesa e queijo gratinado",
 "preco": 42.50,
 "categoria": "PRATO",
-"disponivel": true
+"disponivel": true,
+"imagemUrl": "🍝"
 }
 
 
@@ -565,7 +566,8 @@ Antes de testar os endpoints, é possível verificar o status da API e acessar s
     "descricao": "Lasanha tradicional com molho bolonhesa e queijo gratinado",
     "categoria": "PRATO",
     "preco": 42.5,
-    "disponivel": true
+    "disponivel": true,
+    "imagemUrl": "🍝"
   },
   "mensagem": "Item do cardápio criado com sucesso!",
   "_links": {
@@ -588,7 +590,8 @@ Antes de testar os endpoints, é possível verificar o status da API e acessar s
 "descricao": "Lasanha tradicional com molho bolonhesa e queijo gratinado",
 "preco": 42.50,
 "categoria": "PRATO",
-"disponivel": true
+"disponivel": true,
+"imagemUrl": "🧀"
 }
 
 
@@ -603,7 +606,8 @@ Antes de testar os endpoints, é possível verificar o status da API e acessar s
     "descricao": "Lasanha tradicional com molho bolonhesa e queijo gratinado",
     "categoria": "PRATO",
     "preco": 42.5,
-    "disponivel": true
+    "disponivel": true,
+    "imagemUrl": "🧀"
   },
   "mensagem": "Item do cardápio atualizado com sucesso!",
   "_links": {
