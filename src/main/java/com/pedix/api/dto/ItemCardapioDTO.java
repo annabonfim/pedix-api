@@ -26,4 +26,7 @@ public class ItemCardapioDTO {
     private BigDecimal preco;
 
     private Boolean disponivel = true;
+
+    @Size(max = 500, message = "A URL da imagem deve ter no máximo 500 caracteres.")
+    private String imagemUrl;
 }

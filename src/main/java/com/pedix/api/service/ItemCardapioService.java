@@ -73,6 +73,7 @@ public class ItemCardapioService {
         itemExistente.setCategoria(dto.getCategoria());
         itemExistente.setPreco(dto.getPreco());
         itemExistente.setDisponivel(dto.getDisponivel());
+        itemExistente.setImagemUrl(dto.getImagemUrl());
 
         return repository.save(itemExistente);
     }
@@ -98,6 +99,7 @@ public class ItemCardapioService {
         item.setCategoria(dto.getCategoria());
         item.setPreco(dto.getPreco());
         item.setDisponivel(dto.getDisponivel() != null ? dto.getDisponivel() : Boolean.TRUE);
+        item.setImagemUrl(dto.getImagemUrl());
         return item;
     }
 }
