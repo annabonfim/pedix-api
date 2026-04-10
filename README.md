@@ -48,7 +48,7 @@ Na Sprint 3, a API foi expandida para suportar o **gerenciamento de mesas** e in
 ## 📱 Interface do Aplicativo Pedix
 
 <p align="center">
-  <img src="docs/imagens/tela-inicial-app.png" alt="Tela inicial do app Pedix" width="250">
+  <img src="docs/imagens/tela-inicial.png" alt="Tela inicial do app Pedix" width="250">
   <br>
   <em>Tela inicial do aplicativo Pedix</em>
 </p>
@@ -166,7 +166,7 @@ pedix-api/
 │   │   └── diagrama-mer-pedix.png       → Modelo Entidade-Relacionamento (MER) do banco Oracle
 │   │
 │   ├── imagens/
-│   │   ├── tela-inicial-app.png         → Tela inicial do aplicativo mobile Pedix
+│   │   ├── tela-inicial.png         → Tela inicial do aplicativo mobile Pedix
 │   │   └── colecao-postman/             → Evidências visuais dos testes dos endpoints (prints do Postman)
 │   │       ├── 1-GET-item-cardapio.png
 │   │       ├── 2-GET-item-cardapio-ID.png
