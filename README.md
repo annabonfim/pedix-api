@@ -926,13 +926,13 @@ Representa os itens disponíveis no cardápio (pratos, bebidas e sobremesas).
 
 ```
 CREATE TABLE item_cardapio (
-id              NUMBER PRIMARY KEY,
-nome            VARCHAR2(255) NOT NULL,
-descricao       VARCHAR2(500),
-preco           NUMBER(10,2) NOT NULL,
-categoria       VARCHAR2(50),
-disponivel      NUMBER(1) DEFAULT 1,
-imagem_url      VARCHAR2(500)
+  id_item         NUMBER PRIMARY KEY,
+  nome            VARCHAR2(120) NOT NULL,
+  descricao       VARCHAR2(500),
+  preco           NUMBER(12,2) NOT NULL,
+  categoria       VARCHAR2(30),
+  disponivel      CHAR(1) DEFAULT 'S',
+  imagem_url      VARCHAR2(500)
 );
 ```
 
@@ -999,36 +999,66 @@ END;
 ```
 
 ## 🍕 Inserts Iniciais — ITEM_CARDAPIO
+
+> Cardápio do restaurante italiano com 19 itens (pratos, bebidas e sobremesas).
+
 ```
-INSERT INTO item_cardapio (nome, descricao, preco, categoria, disponivel, imagem_url)
-VALUES ('Pizza Calabresa', 'Deliciosa pizza com calabresa', 35.00, 'PRATO', 1, NULL);
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Água', 'Água mineral sem gás, garrafa 500ml', 4.50, 'bebida', 'S', 'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=300');
 
-INSERT INTO item_cardapio (nome, descricao, preco, categoria, disponivel, imagem_url)
-VALUES ('Refrigerante', 'Coca Cola 350ml', 8.50, 'BEBIDA', 1, NULL);
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Refrigerante', 'Refrigerante gelado, lata 350ml', 6.00, 'bebida', 'S', 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300');
 
-INSERT INTO item_cardapio (nome, descricao, preco, categoria, disponivel, imagem_url)
-VALUES ('Sorvete Chocolate', 'Sobremesa gelada', 12.00, 'SOBREMESA', 1, NULL);
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Suco', 'Suco natural da fruta, copo 300ml', 8.00, 'bebida', 'S', 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=300');
 
-INSERT INTO item_cardapio (nome, descricao, preco, categoria, disponivel, imagem_url)
-VALUES ('Pizza Mussarela', 'Pizza de mussarela com borda recheada', 38.00, 'PRATO', 1, NULL);
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Espresso Italiano', 'Café espresso encorpado, servido na xícara tradicional', 7.00, 'bebida', 'S', 'https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=300');
 
-INSERT INTO item_cardapio (nome, descricao, preco, categoria, disponivel, imagem_url)
-VALUES ('Pizza Frango', 'Pizza de frango com catupiry', 40.00, 'PRATO', 1, NULL);
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Hambúrguer', 'Hambúrguer artesanal com queijo, alface, tomate e molho especial', 25.00, 'prato', 'S', 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300');
 
-INSERT INTO item_cardapio (nome, descricao, preco, categoria, disponivel, imagem_url)
-VALUES ('Suco Laranja', 'Suco natural 300ml', 7.50, 'BEBIDA', 1, NULL);
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Batata Frita', 'Porção média de batata frita crocante com sal e orégano', 15.00, 'prato', 'S', 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300');
 
-INSERT INTO item_cardapio (nome, descricao, preco, categoria, disponivel, imagem_url)
-VALUES ('Salada Caesar', 'Salada com alface, frango e molho caesar', 25.00, 'PRATO', 1, NULL);
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Pizza Margherita', 'Massa fina com molho de tomate San Marzano, mussarela e manjericão fresco', 35.00, 'prato', 'S', 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300');
 
-INSERT INTO item_cardapio (nome, descricao, preco, categoria, disponivel, imagem_url)
-VALUES ('Brownie', 'Brownie de chocolate com nozes', 10.00, 'SOBREMESA', 1, NULL);
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Insalata Caprese', 'Tomate, mussarela de búfala, manjericão e azeite extravirgem', 28.00, 'prato', 'S', 'https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?w=300');
 
-INSERT INTO item_cardapio (nome, descricao, preco, categoria, disponivel, imagem_url)
-VALUES ('Água Mineral', 'Água sem gás 500ml', 5.00, 'BEBIDA', 1, NULL);
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Sorvete', 'Sorvete artesanal italiano, 2 bolas à escolha', 16.00, 'sobremesa', 'S', 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=300');
 
-INSERT INTO item_cardapio (nome, descricao, preco, categoria, disponivel, imagem_url)
-VALUES ('Pizza Portuguesa', 'Pizza com presunto, ovos e azeitonas', 42.00, 'PRATO', 1, NULL);
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Panna Cotta', 'Creme italiano com calda de frutas vermelhas', 18.00, 'sobremesa', 'S', 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=300');
+
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Bruschetta Caprese', 'Pão italiano tostado com tomate, mussarela de búfala e manjericão', 22.00, 'prato', 'S', 'https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=300');
+
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Arancini', 'Bolinhos crocantes de risoto recheados com mussarela', 28.00, 'prato', 'S', 'https://images.unsplash.com/photo-1595295333158-4742f28fbd85?w=300');
+
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Spaghetti Carbonara', 'Massa al dente com molho cremoso, bacon crocante e parmesão', 42.00, 'prato', 'S', 'https://images.unsplash.com/photo-1612874742237-6526221588e3?w=300');
+
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Tiramisù', 'Clássico italiano com camadas de biscoito, café e mascarpone', 24.00, 'sobremesa', 'S', 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=300');
+
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Limonada Siciliana', 'Limonada refrescante com hortelã e limão siciliano', 14.00, 'bebida', 'S', 'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=300');
+
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Lasagna alla Bolognese', 'Camadas de massa fresca, ragu de carne, bechamel e parmesão gratinado', 48.00, 'prato', 'S', 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=300');
+
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Risotto ai Funghi', 'Arroz arbóreo cremoso com mix de cogumelos e parmesão', 45.00, 'prato', 'S', 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=300');
+
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Fettuccine Alfredo', 'Massa fresca ao molho cremoso de parmesão e manteiga', 38.00, 'prato', 'S', 'https://images.unsplash.com/photo-1645112411341-6c4fd023714a?w=300');
+
+INSERT INTO ITEM_CARDAPIO (NOME, DESCRICAO, PRECO, CATEGORIA, DISPONIVEL, IMAGEM_URL)
+VALUES ('Soda Italiana', 'Sodas italianas refrescantes e artesanais. Sabores: maçã verde, frutas vermelhas e lichia.', 12.00, 'bebida', 'S', 'https://images.unsplash.com/photo-1512482017241-ccce0181a7fd?w=800&q=80');
 ```
 
 ## 🧾 Inserts Iniciais — PEDIDO e PEDIDO_ITEM
